@@ -1,0 +1,17 @@
+{
+  "name": "resultats-presidentielles",
+  "description": "Résultats présidentielles",
+  "author": "Nicolas Lesconnec",
+  "version": "0.1",
+  "dependencies": {
+    "express": "2.5.0",
+    "request": "2.1.x",
+	 "requirejs":"0.27.x"
+  },
+  "user":"nicolsc",
+  "scripts":{
+    "start": "backend/server.js"
+  },
+  "domain":"lesconnec.fr",
+  "engine": "node = 0.4.x"
+}
