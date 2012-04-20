@@ -44,10 +44,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
   			this.routes.historyStart();
       },
       viewHome:function(){
-      	console.log('home')
       	var self=this;
       	self.API.getStatus(function(err, res){
-      		console.log('api got', err, res)
       		if (err){
       			console.error('unexpected error', err);
       			window.location.hash = 'error/initAPI/'+err;
@@ -60,7 +58,6 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       			$('#wait').html('Résultats dans '+self.formatTime(res.timer));
       		}
 
-      		console.log('status', err, res)
       	});
       },
       formatTime:function(seconds){
