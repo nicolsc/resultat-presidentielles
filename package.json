@@ -2,7 +2,7 @@
   "name": "resultats-presidentielles",
   "description": "Résultats présidentielles",
   "author": "Nicolas Lesconnec",
-  "version": "0.1",
+  "version": "0.1.0",
   "dependencies": {
     "express": "2.5.0",
     "request": "2.1.x",

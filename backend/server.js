@@ -7,15 +7,14 @@ var express = require('express'),
     port=process.env.PORT || 40104;
 
 
-testPath = __dirname+'/../public';
+testPath = __dirname+'/../frontend';
 expressApp.use(express.static(testPath));
 expressApp.use(express.bodyParser());
 
 expressApp.get("/",function(req,res,next) {
-  fs.readFile("public/index.html","utf-8",function(err,data) { 
+  fs.readFile("frontend/index.html","utf-8",function(err,data) { 
     res.send(data);
   });
-});
 });
 
 expressApp.listen(port);
