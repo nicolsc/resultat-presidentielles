@@ -17,6 +17,26 @@ expressApp.get("/",function(req,res,next) {
   });
 });
 
+expressApp.get('/proxy', function (req, res){
+  handleProxy(req, res);
+});
+
+function handleProxy(req, res){
+   var rq = {'uri':decodeURIComponent(req.param("url")),'method':req.param('method')||'GET'};
+   console.log('rq', rq)
+    if (req.body && req.body.body!==undefined) {
+        rq["body"] = serialize(req.body.body);
+        rq["headers"] = {"Content-Type":req.headers.Accept || "application/x-www-form-urlencoded"};
+    } else {
+        rq["headers"] = {"Content-Length":"0"};
+    }
+    request(rq,function(error, response, body) {
+      console.log('Proxy answer', req.header('Accept'))
+        res.send(body,{'Content-Type':req.header('Accept')});
+    });
+}
+
+
 expressApp.listen(port);
 console.log('Server listening on port', port)
 
