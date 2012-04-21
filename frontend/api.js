@@ -46,8 +46,6 @@ define(['joshlib!vendor/underscore', 'joshlib!vendor/reqwest'],
 				});
 			},
 			getResults:function(year, round, callback){
-				year= 2007;
-
 				var cb = _.after(2, callback); //2: national + all departements
 				var results = {};
 				this.getNationalResults(year, round, function(err, res){
