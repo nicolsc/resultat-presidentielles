@@ -1,0 +1,2 @@
+define([], function(){return(
+{"estimate":false,"updated_at":"16\/04 à 13h38","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/corse-sud_2A","population":143724,"registered":86430,"participation":{"percent":69.11,"number":59736},"abstained":{"percent":30.89,"number":26694},"real":{"percent":93.84,"number":56059},"blank":{"percent":6.16,"number":3677},"votes":{"Jacques Chirac":{"number":43557,"percent":77.7},"Jean-Marie Le Pen":{"number":12502,"percent":22.3}}})});

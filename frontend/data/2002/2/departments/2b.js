@@ -1,0 +1,2 @@
+define([], function(){return(
+{"estimate":false,"updated_at":"16\/04 à 13h38","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/haute-corse_2B","population":167103,"registered":104842,"participation":{"percent":66.67,"number":69901},"abstained":{"percent":33.33,"number":34941},"real":{"percent":91.45,"number":63927},"blank":{"percent":8.550000000000001,"number":5974},"votes":{"Jacques Chirac":{"number":52148,"percent":81.56999999999999},"Jean-Marie Le Pen":{"number":11779,"percent":18.43}}})});

@@ -1,0 +1,35 @@
+<% function formatBigNumber(n){
+	if (n<100) return n;
+
+	var input=''+n,output = '';
+
+	while (input.length){
+		output = input.substr(-3)+' '+output;
+		input = input.substr(0, input.length-3);
+	}
+
+	return output;
+}
+%>
+<div class='result'>
+	<div class='infos'>
+		<table>
+			<tr>
+				<th>Population</th>
+				<td><%=formatBigNumber(item.population)%></td>
+			</tr>
+			<tr>
+				<th>Inscrits</th>
+				<td><%=formatBigNumber(item.registered)%></td>
+			</tr>
+			<tr>
+				<th>Participation</th>
+				<td><%=item.participation.percent%>%</td>
+			</tr>
+		</table>
+
+	</div>
+	<div id='map'>
+
+	</div>
+</div>
