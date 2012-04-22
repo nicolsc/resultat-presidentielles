@@ -152,6 +152,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       },
       initMap:function(id){
       	var self=this;
+      	document.getElementById(id).innerHTML = '';
       	self.map = {
       		keys:[],
       		raphael:new Raphael(document.getElementById(id), 600, 600)
