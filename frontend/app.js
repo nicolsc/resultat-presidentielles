@@ -125,8 +125,13 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	      		}), function(item){return 0-item.percent}) : null)
 	      	});
 	      	self.views.resultPeople.render();
-	      	self.initMap('map');	
+	      	self.initMap('result-map');	
 	      	self.fillMap(results.departments, year);
+
+
+	      	if (results && results.national){
+	      		$('h3').html('Source: '+_.first(results.national.sources)+', '+results.national.updated_at);
+	      	}
       	});
       	
 
