@@ -9,7 +9,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
         'data/2007/people',
         'data/2012/people',
         'data/geo',
-        'requiretext!templates/result.html'],
+        'requiretext!templates/result.html', 'requiretext!templates/result-people.html'],
   function(_,Backbone,Router,
             API,
             Panel, List,
@@ -21,7 +21,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 			res_2007_people,
 			res_2012_people,
             geo,
-            tpl_result) {
+            tpl_result, tpl_people) {
   	window._ = _;
   	window.geo = geo;
 
@@ -107,15 +107,26 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	var self=this;
       	self.getResults(year, round, function(err, results){
       		console.log('res',results )
-			self.views.result = new Panel({
-	 			el:"#result",
+      		//sort results
+			self.views.resultInfos = new Panel({
+	 			el:"#result-infos",
 	         	// templateEl:"#template-local",
 	         	template : tpl_result,
 	          	collection:new Backbone.Collection([results ? results.national : null]),
 	      	});
-	      	self.views.result.render();
-	      	self.drawMap('map');	
-	      	self.colorMap(results.departments, year);
+	      	self.views.resultInfos.render();
+
+	      	
+	      	self.views.resultPeople = new List({
+	      		el:'#result-people',
+	      		itemTemplate:tpl_people,
+	      		collection:new Backbone.Collection(results ? _.sortBy(_.map(results.national.votes, function(item, name){
+	      			return _.extend({name:name}, item);
+	      		}), function(item){return 0-item.percent}) : null)
+	      	});
+	      	self.views.resultPeople.render();
+	      	self.initMap('map');	
+	      	self.fillMap(results.departments, year);
       	});
       	
 
@@ -134,7 +145,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       		
       	}
       },
-      drawMap:function(id){
+      initMap:function(id){
       	var self=this;
       	self.map = {
       		keys:[],
@@ -143,6 +154,10 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	_.each(geo, function(dep, key){
       		self.map.keys[key] = self.map.raphael.path(dep);
       	});
+      },
+      fillMap:function(results, year){
+      	var self=this;
+      	self.colorMap(results, year);
       },
       colorMap:function(results, year){
       	var self=this;
@@ -158,6 +173,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 
       		self.map.keys[dep].attr('fill', people[leader.name].color)
       	});
+      },
+      viewDepartmentResults:function(results){
+
       },
       formatTime:function(seconds){
       	var days = Math.floor(seconds/(3600*24));

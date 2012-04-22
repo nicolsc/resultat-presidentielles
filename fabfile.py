@@ -36,6 +36,7 @@ def mycopy():
   local("cp -R frontend/css export/frontend/css")
   local("cp -R frontend/img export/frontend/img")
   local("cp -R export-optimized export/frontend/js")
+  local("cp frontend/js/raphael.js export/frontend/js/raphael.js")
   local("cp -R backend export/")
   local("cp -R package.json export/")
   
