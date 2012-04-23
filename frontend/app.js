@@ -312,7 +312,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	if (results && results.departements && results.departements[department]){
       		var desc = results.departements[department].slug ? results.departements[department].slug.match(/^\/elections\/([^\_]*)/) : '';
       		
-	      	$('#result-department h3').html('Résultats '+(desc ? desc[1] : department));
+	      	$('#result-department h3').html('Résultats '+(desc ? desc[1].substring(0,1).toUpperCase()+desc[1].substring(1) : department));
 	      	$('#result-department h4').html('Source: '+_.first(results.departements[department].sources)+', '+results.departements[department].updated_at);
 	     }
 
