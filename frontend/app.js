@@ -7,6 +7,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
         'data/2007/1/national','data/2007/2/national',
         'data/2007/1/departments/all','data/2007/2/departments/all',
         'data/2007/people',
+        'data/2012/1/national',
+        'data/2012/1/departments/all',
         'data/2012/people',
         'data/geo',
         'requiretext!templates/result.html', 'requiretext!templates/result-people.html', 'requiretext!templates/menu-item.html'],
@@ -19,6 +21,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
             res_2007_1_national, res_2007_2_national,
 			res_2007_1_departments, res_2007_2_departments,
 			res_2007_people,
+			res_2012_1_national, 
+			res_2012_1_departments,
 			res_2012_people,
             geo,
             tpl_result, tpl_people, tpl_menu_item) {
@@ -306,7 +310,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	self.views.resultDeptPeople.render();
 
       	if (results && results.departements && results.departements[department]){
-      		var desc = results.departements[department].slug.match(/^\/elections\/([^\_]*)/);
+      		var desc = results.departements[department].slug ? results.departements[department].slug.match(/^\/elections\/([^\_]*)/) : '';
       		
 	      	$('#result-department h3').html('Résultats '+(desc ? desc[1] : department));
 	      	$('#result-department h4').html('Source: '+_.first(results.departements[department].sources)+', '+results.departements[department].updated_at);
