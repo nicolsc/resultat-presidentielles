@@ -16,15 +16,15 @@
 		<table>
 			<tr>
 				<th>Population</th>
-				<td><%=formatBigNumber(item.population)%></td>
+				<td><%=item.population ? formatBigNumber(item.population) : '-'%></td>
 			</tr>
 			<tr>
 				<th>Inscrits</th>
-				<td><%=formatBigNumber(item.registered)%></td>
+				<td><%=item.inscrits ? formatBigNumber(item.registered) : '-'%></td>
 			</tr>
 			<tr>
 				<th>Participation</th>
-				<td><%=item.participation.percent%>%</td>
+				<td><%=item.participation && item.participation.percent ? item.participation.percent+'%' : '-'%></td>
 			</tr>
 		</table>
 

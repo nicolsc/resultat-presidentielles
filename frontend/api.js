@@ -10,13 +10,22 @@ define(['joshlib!vendor/underscore', 'joshlib!vendor/reqwest'],
 			**/
 			request:function(options, callback){
 				var done = false;
+				var timedout = false;
 				var params = _.extend(options,
 				                {
 				                  success:function(data){
+				                  	if (timedout){
+				                  		//too late
+				                  		return;
+				                  	}
 				                    done = true;
 				                    callback(null, data)
 				                  },
 				                  error:function(err){
+				                  	if (timedout){
+				                  		//too late
+				                  		return;
+				                  	}
 				                    done = true;
 				                    callback(err, null);
 				                  }
@@ -26,11 +35,11 @@ define(['joshlib!vendor/underscore', 'joshlib!vendor/reqwest'],
 				reqwest(params);
 				setTimeout(function(){
 				  if (!done){
-				              console.log('timedout', params.url)
-
+					console.log('timedout', params.url)
+					timedout=true;
 				    return callback('Request failed - '+options.url, null);
 				  }
-				}, 7500);
+				}, 12500);
 
 			},
 			proxy:function(url, options, callback){
@@ -69,9 +78,8 @@ define(['joshlib!vendor/underscore', 'joshlib!vendor/reqwest'],
 			},
 			getEveryDepartementsResults:function(year, round, callback){
 				var cb = _.after(96, callback);
-				var i = 96;
 				var results = {};
-				for (;i-->1;){
+				for (var i=96;i-->1;){
 					if (i==20){
 						//corse
 						this.getDepartmentResults(year, round, '2A', function(err, res){
@@ -85,7 +93,9 @@ define(['joshlib!vendor/underscore', 'joshlib!vendor/reqwest'],
 					}
 					else{
 						this.getDepartmentResults(year, round, i,function(err, res){
-							results[i] =res;
+							if (res && !err){
+								results[res.department] =res;
+							}
 							cb(err, results);
 						});
 					}
@@ -100,7 +110,9 @@ define(['joshlib!vendor/underscore', 'joshlib!vendor/reqwest'],
 				var url = this.getResultsRoot(year, round)+'/department/'+department+'.json';
 				
 				return this.proxy(url, {type:'text'}, function(err, res){
-					self.processTextResult(err, res, callback);
+					self.processTextResult(err, res, function(error, result){
+						callback(error, _.extend({department:department}, result));
+					});
 				});
 			},
 			getResultsRoot:function(year, round, type){

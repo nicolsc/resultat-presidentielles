@@ -38,7 +38,7 @@ define([], function(){ return({
 '19':
 {"estimate":false,"updated_at":"10\/05 à 12h13","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/correze_19","population":252116,"registered":187179,"participation":{"percent":87.90000000000001,"number":164528},"abstained":{"percent":12.1,"number":22651},"real":{"percent":95.09,"number":156457},"blank":{"percent":4.91,"number":8071},"votes":{"Nicolas Sarkozy":{"number":73548,"percent":47.01},"Ségolène Royal":{"number":82909,"percent":52.99}}}, 
 '20':
-{"phase":"1","timer":70139}, 
+{"phase":"2","estimate":false,"updated_at":"23\/04 à 10h51","sources":["Ministère de l'Intérieur"],"participation":{"percent":79.47,"number":36585858},"blank":{"percent":1.91,"number":700119},"votes":{"François Bayrou":{"number":3275349,"percent":9.130000000000001},"Nicolas Sarkozy":{"number":9753844,"percent":27.18},"François Hollande":{"number":10273582,"percent":28.63},"Nicolas Dupont-Aignan":{"number":644086,"percent":1.79},"Philippe Poutou":{"number":411178,"percent":1.15},"Jacques Cheminade":{"number":89572,"percent":0.25},"Eva Joly":{"number":828451,"percent":2.31},"Jean-Luc Mélenchon":{"number":3985298,"percent":11.11},"Nathalie Arthaud":{"number":202562,"percent":0.5600000000000001},"Marine Le Pen":{"number":6421773,"percent":17.9}}}, 
 '21':
 {"estimate":false,"updated_at":"10\/05 à 12h15","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/cote-d-or_21","population":538259,"registered":349541,"participation":{"percent":86.45,"number":302194},"abstained":{"percent":13.55,"number":47347},"real":{"percent":95.63,"number":288977},"blank":{"percent":4.37,"number":13217},"votes":{"Nicolas Sarkozy":{"number":162217,"percent":56.13},"Ségolène Royal":{"number":126760,"percent":43.87}}}, 
 '22':
@@ -189,7 +189,7 @@ define([], function(){ return({
 {"estimate":false,"updated_at":"10\/05 à 14h02","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/val-de-marne_94","population":1331443,"registered":746130,"participation":{"percent":84.55,"number":630817},"abstained":{"percent":15.45,"number":115313},"real":{"percent":96.3,"number":607491},"blank":{"percent":3.7,"number":23326},"votes":{"Nicolas Sarkozy":{"number":302513,"percent":49.8},"Ségolène Royal":{"number":304978,"percent":50.2}}}, 
 '95':
 {"estimate":false,"updated_at":"10\/05 à 14h02","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/val-d-oise_95","population":1185379,"registered":675274,"participation":{"percent":84.73,"number":572186},"abstained":{"percent":15.27,"number":103088},"real":{"percent":96.25,"number":550755},"blank":{"percent":3.75,"number":21431},"votes":{"Nicolas Sarkozy":{"number":288062,"percent":52.3},"Ségolène Royal":{"number":262693,"percent":47.7}}}, 
-'2a':
+'2A':
 {"estimate":false,"updated_at":"10\/05 à 12h29","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/corse-sud_2A","population":143724,"registered":94554,"participation":{"percent":78.26000000000001,"number":73997},"abstained":{"percent":21.74,"number":20557},"real":{"percent":96.08,"number":71093},"blank":{"percent":3.92,"number":2904},"votes":{"Nicolas Sarkozy":{"number":43844,"percent":61.67},"Ségolène Royal":{"number":27249,"percent":38.33}}}, 
-'2b':
+'2B':
 {"estimate":false,"updated_at":"10\/05 à 12h30","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/haute-corse_2B","population":167103,"registered":111875,"participation":{"percent":78.86,"number":88224},"abstained":{"percent":21.14,"number":23651},"real":{"percent":96.22,"number":84887},"blank":{"percent":3.78,"number":3337},"votes":{"Nicolas Sarkozy":{"number":49927,"percent":58.82},"Ségolène Royal":{"number":34960,"percent":41.18}}}})});

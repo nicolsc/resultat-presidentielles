@@ -38,7 +38,7 @@ define([], function(){ return({
 '19':
 {"estimate":false,"updated_at":"16\/04 à 13h30","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/correze_19","population":252116,"registered":184162,"participation":{"percent":86.04000000000001,"number":158456},"abstained":{"percent":13.96,"number":25706},"real":{"percent":93.73,"number":148522},"blank":{"percent":6.27,"number":9934},"votes":{"Jacques Chirac":{"number":134991,"percent":90.89},"Jean-Marie Le Pen":{"number":13531,"percent":9.109999999999999}}}, 
 '20':
-{"phase":"1","timer":70139}, 
+{"phase":"2","estimate":false,"updated_at":"23\/04 à 10h51","sources":["Ministère de l'Intérieur"],"participation":{"percent":79.47,"number":36585858},"blank":{"percent":1.91,"number":700119},"votes":{"François Bayrou":{"number":3275349,"percent":9.130000000000001},"Nicolas Sarkozy":{"number":9753844,"percent":27.18},"François Hollande":{"number":10273582,"percent":28.63},"Nicolas Dupont-Aignan":{"number":644086,"percent":1.79},"Philippe Poutou":{"number":411178,"percent":1.15},"Jacques Cheminade":{"number":89572,"percent":0.25},"Eva Joly":{"number":828451,"percent":2.31},"Jean-Luc Mélenchon":{"number":3985298,"percent":11.11},"Nathalie Arthaud":{"number":202562,"percent":0.5600000000000001},"Marine Le Pen":{"number":6421773,"percent":17.9}}}, 
 '21':
 {"estimate":false,"updated_at":"16\/04 à 13h31","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/cote-d-or_21","population":538259,"registered":330297,"participation":{"percent":81.87,"number":270405},"abstained":{"percent":18.13,"number":59892},"real":{"percent":94.12,"number":254500},"blank":{"percent":5.88,"number":15905},"votes":{"Jacques Chirac":{"number":207876,"percent":81.68000000000001},"Jean-Marie Le Pen":{"number":46624,"percent":18.32}}}, 
 '22':
@@ -189,7 +189,7 @@ define([], function(){ return({
 {"estimate":false,"updated_at":"16\/04 à 14h23","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/val-de-marne_94","population":1331443,"registered":677572,"participation":{"percent":79.72,"number":540156},"abstained":{"percent":20.28,"number":137416},"real":{"percent":96.27,"number":520007},"blank":{"percent":3.73,"number":20149},"votes":{"Jacques Chirac":{"number":448375,"percent":86.22},"Jean-Marie Le Pen":{"number":71632,"percent":13.78}}}, 
 '95':
 {"estimate":false,"updated_at":"16\/04 à 14h23","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/val-d-oise_95","population":1185379,"registered":604201,"participation":{"percent":79.98999999999999,"number":483279},"abstained":{"percent":20.01,"number":120922},"real":{"percent":95.78,"number":462895},"blank":{"percent":4.22,"number":20384},"votes":{"Jacques Chirac":{"number":382990,"percent":82.73999999999999},"Jean-Marie Le Pen":{"number":79905,"percent":17.26}}}, 
-'2a':
+'2A':
 {"estimate":false,"updated_at":"16\/04 à 13h38","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/corse-sud_2A","population":143724,"registered":86430,"participation":{"percent":69.11,"number":59736},"abstained":{"percent":30.89,"number":26694},"real":{"percent":93.84,"number":56059},"blank":{"percent":6.16,"number":3677},"votes":{"Jacques Chirac":{"number":43557,"percent":77.7},"Jean-Marie Le Pen":{"number":12502,"percent":22.3}}}, 
-'2b':
+'2B':
 {"estimate":false,"updated_at":"16\/04 à 13h38","sources":["Ministère de l'Intérieur"],"slug":"\/elections\/haute-corse_2B","population":167103,"registered":104842,"participation":{"percent":66.67,"number":69901},"abstained":{"percent":33.33,"number":34941},"real":{"percent":91.45,"number":63927},"blank":{"percent":8.550000000000001,"number":5974},"votes":{"Jacques Chirac":{"number":52148,"percent":81.56999999999999},"Jean-Marie Le Pen":{"number":11779,"percent":18.43}}}})});

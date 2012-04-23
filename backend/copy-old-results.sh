@@ -103,10 +103,10 @@ done
 # echo ")});" >> ../frontend/data/2007/1/departments/2b.js
 # echo ")});" >> ../frontend/data/2007/2/departments/2b.js
 
-echo "'2a'": >> ../frontend/data/2002/1/departments/all.js
-echo "'2a'": >> ../frontend/data/2002/2/departments/all.js
-echo "'2a'": >> ../frontend/data/2007/1/departments/all.js
-echo "'2a'": >> ../frontend/data/2007/2/departments/all.js
+echo "'2A'": >> ../frontend/data/2002/1/departments/all.js
+echo "'2A'": >> ../frontend/data/2002/2/departments/all.js
+echo "'2A'": >> ../frontend/data/2007/1/departments/all.js
+echo "'2A'": >> ../frontend/data/2007/2/departments/all.js
 curl http://www.francetv.fr/resultats/resultats/2002/presidential/1/department/2A.json >> ../frontend/data/2002/1/departments/all.js
 curl http://www.francetv.fr/resultats/resultats/2002/presidential/2/department/2A.json >> ../frontend/data/2002/2/departments/all.js
 curl http://www.francetv.fr/resultats/resultats/2007/presidential/1/department/2A.json >> ../frontend/data/2007/1/departments/all.js
@@ -117,10 +117,10 @@ echo ', ' >> ../frontend/data/2002/2/departments/all.js
 echo ', ' >> ../frontend/data/2007/1/departments/all.js
 echo ', ' >> ../frontend/data/2007/2/departments/all.js
 
-echo "'2b'": >> ../frontend/data/2002/1/departments/all.js
-echo "'2b'": >> ../frontend/data/2002/2/departments/all.js
-echo "'2b'": >> ../frontend/data/2007/1/departments/all.js
-echo "'2b'": >> ../frontend/data/2007/2/departments/all.js
+echo "'2B'": >> ../frontend/data/2002/1/departments/all.js
+echo "'2B'": >> ../frontend/data/2002/2/departments/all.js
+echo "'2B'": >> ../frontend/data/2007/1/departments/all.js
+echo "'2B'": >> ../frontend/data/2007/2/departments/all.js
 curl http://www.francetv.fr/resultats/resultats/2002/presidential/1/department/2B.json >> ../frontend/data/2002/1/departments/all.js
 curl http://www.francetv.fr/resultats/resultats/2002/presidential/2/department/2B.json >> ../frontend/data/2002/2/departments/all.js
 curl http://www.francetv.fr/resultats/resultats/2007/presidential/1/department/2B.json >> ../frontend/data/2007/1/departments/all.js
