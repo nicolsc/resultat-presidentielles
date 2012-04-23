@@ -28,13 +28,13 @@ define([], function(){
 			color:'brown'
 		},
 		'Jean-Marie Le Pen':{
-			color:'darkgrey'
+			color:'darkblue'
 		},
 		'Arlette Laguiller':{
 			color:'red'
 		},
 		'Nicolas Sarkozy':{
-			color:'blue'
+			color:'lightblue'
 		}
 	};
 

@@ -7,6 +7,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
         'data/2007/1/national','data/2007/2/national',
         'data/2007/1/departments/all','data/2007/2/departments/all',
         'data/2007/people',
+        null,null,
+        null, null,
         'data/2012/people',
         'data/geo',
         'requiretext!templates/result.html', 'requiretext!templates/result-people.html'],
@@ -19,6 +21,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
             res_2007_1_national, res_2007_2_national,
 			res_2007_1_departments, res_2007_2_departments,
 			res_2007_people,
+			res_2012_1_national, res_2012_2_national,
+			res_2012_1_departments, res_2012_2_departments,
 			res_2012_people,
             geo,
             tpl_result, tpl_people) {
@@ -28,7 +32,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
   	var app =  {
     	API:API,
     	views:{},
-    	years:{active:2012, past:[2007, 2002]},
+    	currentYear:2012,
+    	currentRound:new Date().getTime()<1336255200000 ? 1 : 2, //1336255200000 = 6.5.2012
+    	years:[2002, 2007, 2012],
     	pastResults:{},
     	setup:function(){
   			var self=this;
@@ -41,7 +47,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
   		},
   		initPastResults:function(){
   			var self=this;
-  			_.each(self.years.past, function(y){
+  			_.each(self.years, function(y){
+
   				self.pastResults[y]={
 					people:eval('res_'+y+'_people'),
   					1:{
@@ -99,25 +106,27 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       			window.location.hash = 'error/initAPI/'+err.responseText;
       			return;
       		}
-      		self.currentRound = res.phase;
-      		$('h2').text((self.currentRound==1 ? '1er ': self.currentRound+'e ' )+'tour '+self.years.active);
+      		//self.currentRound = res.phase;
+      		$('h2').text((self.currentRound==1 ? '1er ': self.currentRound+'e ' )+'tour '+self.currentYear);
       		if (res.timer && res.timer > 0){
       			
       			$('#wait').html('Résultats dans '+self.formatTime(res.timer));
       		}
       		else{
-      			window.location.hash = 'resultat/'+self.years.active+'/'+self.currentRound;
+      			window.location.hash = 'resultat/'+self.currentYear+'/'+self.currentRound;
       		}
 
       	});
       },
       viewResults:function(year, round, callback){
       	var self=this;
-      	if (year==self.currentYear && round==self.currentRound){
+      	if (self.currentResults && year==self.currentYear && round==self.currentRound){
       		return callback ? callback() : true;
       	}
-      	$('#main-h2').html('...Chargement en cours...');
+
+      	$('#wait').show();
       	self.getResults(year, round, function(err, results){
+      		$('#wait').hide();
       		self.currentYear = year;
       		self.currentRound = round;	
       		self.currentResults = results;
@@ -129,7 +138,6 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	          	collection:new Backbone.Collection([results ? results.national : null]),
 	      	});
 	      	self.views.resultInfos.render();
-
 	      	
 	      	self.views.resultPeople = new List({
 	      		el:'#result-people',
@@ -158,13 +166,15 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       },
       getResults:function(year, round, callback){
 		var self=this;
-		if (year==self.years.active){
+		var results = self.pastResults[year] ? self.pastResults[year][round] : null;
+
+		if (!results || !results.national){
       		//get live results
       		self.API.getResults(year, round, callback);
       	}
       	else{
       		//static
-      		callback(null,self.pastResults[year][round]);
+      		callback(null,results);
       		
       	}
       },

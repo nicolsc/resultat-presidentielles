@@ -1,13 +1,13 @@
 define([], function(){
 	return {
 		'Nicolas Sarkozy':{
-			color:'blue'
+			color:'lightblue'
 		},
 		'François Hollande':{
 			color:'pink'
 		},
 		'Marine Le Pen':{
-			color:'darkgrey'
+			color:'darkblue'
 		},
 		'François Bayrou':{
 			color:'orange'
