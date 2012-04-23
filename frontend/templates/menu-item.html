@@ -1,0 +1,14 @@
+<li class='menu-top-level'>
+	<a href="<%=item.href%>"><%=item.label%></a>
+	<% if (item.children && item.children.length){
+		%><ul>
+		<%
+		_.each(item.children, function(child){
+		%>
+		<li class='menu-sub-level'><a href="<%=child.href%>"><%=child.label%></a></li>
+		<% 
+		});
+		%>
+		</ul>
+	<% } %>
+</li>

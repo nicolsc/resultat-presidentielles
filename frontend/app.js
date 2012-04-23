@@ -7,11 +7,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
         'data/2007/1/national','data/2007/2/national',
         'data/2007/1/departments/all','data/2007/2/departments/all',
         'data/2007/people',
-        null,null,
-        null, null,
         'data/2012/people',
         'data/geo',
-        'requiretext!templates/result.html', 'requiretext!templates/result-people.html'],
+        'requiretext!templates/result.html', 'requiretext!templates/result-people.html', 'requiretext!templates/menu-item.html'],
   function(_,Backbone,Router,
             API,
             Panel, List,
@@ -21,11 +19,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
             res_2007_1_national, res_2007_2_national,
 			res_2007_1_departments, res_2007_2_departments,
 			res_2007_people,
-			res_2012_1_national, res_2012_2_national,
-			res_2012_1_departments, res_2012_2_departments,
 			res_2012_people,
             geo,
-            tpl_result, tpl_people) {
+            tpl_result, tpl_people, tpl_menu_item) {
   	window._ = _;
   	window.geo = geo;
 
@@ -42,6 +38,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
   			self.API.init(function(){
   				self.setupRouter();
   				self.startRouter();	
+  				self.initMenu();
   			});
   			
   		},
@@ -50,14 +47,49 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
   			_.each(self.years, function(y){
 
   				self.pastResults[y]={
-					people:eval('res_'+y+'_people'),
+					people:(function(){
+							try{
+								return eval('res_'+y+'_people');
+							}
+							catch (e){
+								return null;
+							}
+						})(),
   					1:{
-  						national:eval('res_'+y+'_1_national'),
-  						departements:eval('res_'+y+'_1_departments')
+  						national:(function(){
+							try{
+								return eval('res_'+y+'_1_national');
+							}
+							catch (e){
+								return null;
+							}
+						})(),
+  						departements:(function(){
+							try{
+								return eval('res_'+y+'_1_departments');
+							}
+							catch (e){
+								return null;
+							}
+						})()
   					},
   					2:{
-  						national:eval('res_'+y+'_2_national'),
-  						departements:eval('res_'+y+'_2_departments')
+  						national:(function(){
+							try{
+								return eval('res_'+y+'_2_national');
+							}
+							catch (e){
+								return null;
+							}
+						})(),
+  						departements:(function(){
+							try{
+								return eval('res_'+y+'_2_departments');
+							}
+							catch (e){
+								return null;
+							}
+						})()
   					}
   				};
   				
@@ -76,20 +108,25 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	            "error/:type/:details" 					: 'error'
 	          },
 	          result:function(year, round){
+	          	$('#error').hide();
 	          	self.viewResults(year, round || 1);
 	          },
 	          resultDept:function(year, round, dep){
+	          	$('#error').hide();
 	          	self.viewResults(year, round, function(){
 	          		self.viewDepartmentResults(dep);	
 	          	});
 	          	
 	          },
 	          home:function(){
+	          	$('#error').hide();
 	          	self.viewHome();
 	          },
 
-	          error:function(){
+	          error:function(type, details){
 	          	console.log('error', arguments);
+	          	$('#error').show();
+	          	setTimeout(function(){window.location.hash='';}, 2000);
 	          }
 
 	        });
@@ -98,9 +135,33 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
   		startRouter:function(){
   			this.routes.historyStart();
       },
+      initMenu:function(){
+      	var entries = [];
+      	_.each(this.years, function(year){
+      		entries.push({label:year, href:'#resultat/'+year, children:[{
+      				label:'1er tour',
+      				href:'#resultat/'+year+'/1'
+      			},
+      			{
+      				label:'2e tour',
+      				href:'#resultat/'+year+'/2'
+      			}
+      		]});
+      	});
+      	
+      	this.views.menu = new List({
+      		el:'#menu',
+      		itemTemplate:tpl_menu_item,
+      		collection:new Backbone.Collection(entries)
+      	});
+      	this.views.menu.render();
+      },
       viewHome:function(){
       	var self=this;
+      	$('#wait').show();
       	self.API.getStatus(function(err, res){
+		$('#wait').hide();
+
       		if (err){
       			console.error('unexpected error', err);
       			window.location.hash = 'error/initAPI/'+err.responseText;
@@ -123,10 +184,16 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	if (self.currentResults && year==self.currentYear && round==self.currentRound){
       		return callback ? callback() : true;
       	}
-
+      	$('#result-department').hide();
       	$('#wait').show();
       	self.getResults(year, round, function(err, results){
       		$('#wait').hide();
+
+      		if (err || !results || !results.national){
+      			window.location.hash = 'error/results/no';
+      			return;
+      		}
+
       		self.currentYear = year;
       		self.currentRound = round;	
       		self.currentResults = results;
@@ -138,7 +205,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	          	collection:new Backbone.Collection([results ? results.national : null]),
 	      	});
 	      	self.views.resultInfos.render();
-	      	
+
 	      	self.views.resultPeople = new List({
 	      		el:'#result-people',
 	      		itemTemplate:tpl_people,
@@ -244,6 +311,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	      	$('#result-department h3').html('Résultats '+(desc ? desc[1] : department));
 	      	$('#result-department h4').html('Source: '+_.first(results.departements[department].sources)+', '+results.departements[department].updated_at);
 	     }
+
+	     $('#result-department').show();
       },
       formatTime:function(seconds){
       	var days = Math.floor(seconds/(3600*24));
