@@ -253,7 +253,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	var self=this;
       	document.getElementById(id).innerHTML = '';
       	self.map = {
-      		entries:[],
+      		entries:{},
       		raphael:new Raphael(document.getElementById(id), 600, 600)
       	};
       	_.each(geo, function(dep, key){
