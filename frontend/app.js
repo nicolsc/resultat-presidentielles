@@ -33,7 +33,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
     	API:API,
     	views:{},
     	currentYear:2012,
-    	currentRound:new Date().getTime()<1336255200000 ? 1 : 2, //1336255200000 = 6.5.2012
+    	currentRound:new Date().getTime()<1335909600000 ? 1 : 2, //1335909600000 = 2.5.2012
     	years:[2002, 2007, 2012],
     	pastResults:{},
     	setup:function(){
@@ -113,7 +113,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	          },
 	          result:function(year, round){
 	          	$('#error').hide();
-	          	self.viewResults(year, round || 1);
+	          	self.viewResults(year || self.currentYear, round || self.currentRound);
 	          },
 	          resultDept:function(year, round, dep){
 	          	$('#error').hide();
@@ -161,10 +161,13 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	this.views.menu.render();
       },
       viewHome:function(){
-      	var self=this;
-      	$('#wait').show();
+      	window.location.hash='resultat/'+this.currentYear;
+        /*
+        var self=this;
+      	
+        $('#wait').show();
       	self.API.getStatus(function(err, res){
-		$('#wait').hide();
+		      $('#wait').hide();
 
       		if (err){
       			console.error('unexpected error', err);
@@ -181,29 +184,41 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       			window.location.hash = 'resultat/'+self.currentYear+'/'+self.currentRound;
       		}
 
-      	});
+      	});*/
       },
       viewResults:function(year, round, callback){
-      	var self=this;
+        var self=this;
       	if (self.currentResults && year==self.currentYear && round==self.currentRound){
-      		return callback ? callback() : true;
+          return callback ? callback() : true;
       	}
       	$('#result-department').hide();
       	$('#wait').show();
       	self.getResults(year, round, function(err, results){
-      		$('#wait').hide();
+    		$('#wait').hide();
 
-      		if (err || !results || !results.national){
-      			window.location.hash = 'error/results/no';
-      			return;
-      		}
 
-      		self.currentYear = year;
-      		self.currentRound = round;	
-      		self.currentResults = results;
+
+    		if (err || !results || !results.national){
+    			window.location.hash = 'error/results/no';
+    			return;
+    		}
+
+          self.currentYear = year;
+        self.currentRound = round;  
+        self.currentResults = results;
+        if (self.currentResults.national.timer){
+          //not yet
+          $('h2').text((self.currentRound==1 ? '1er ': self.currentRound+'e ' )+'tour '+self.currentYear);
+          $('#wait').html('Résultats dans '+self.formatTime(self.currentResults.national.timer)).show();
+
+          return;
+        }
+
+
+      	
       		//sort results
-			self.views.resultInfos = new Panel({
-	 			el:"#result-infos",
+			   self.views.resultInfos = new Panel({
+	 			     el:"#result-infos",
 	         	// templateEl:"#template-local",
 	         	template : tpl_result,
 	          	collection:new Backbone.Collection([results ? results.national : null]),
@@ -222,7 +237,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	      	self.fillMap(results.departements, year);
 
 
-	      	if (results && results.national){
+	      	if (results && results.national && results.national.sources){
 	      		$('#main-h3').html('Source: '+_.first(results.national.sources)+', '+results.national.updated_at);
 	      	}
 	      	$('#main-h2').text((round==1 ? '1er ': round+'e ' )+'tour '+year);
@@ -278,6 +293,7 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       		leader = _.first(_.sortBy(_.map(res.votes, function(item, name){
       			return {name:name, number:item.number, percent:item.percent};
       		}), function(item){return 0-item.number;}));
+          if (!leader) return;
       		self.map.entries[dep].attr('fill', people[leader.name].color);
       		self.map.entries[dep].node.id =  'map-item-'+dep;
       	});
