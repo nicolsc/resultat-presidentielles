@@ -1,4 +1,4 @@
-define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
+define(['joshlib!vendor/underscore','joshlib!utils/dollar', 'joshlib!vendor/backbone','joshlib!router',
 		'api',
         'joshlib!ui/panel','joshlib!ui/list',
         'data/2002/1/national','data/2002/2/national',
@@ -10,9 +10,8 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
         'data/2012/1/national',
         'data/2012/1/departments/all',
         'data/2012/people',
-        'data/geo',
         'requiretext!templates/result.html', 'requiretext!templates/result-people.html', 'requiretext!templates/menu-item.html'],
-  function(_,Backbone,Router,
+  function(_,$,Backbone,Router,
             API,
             Panel, List,
             res_2002_1_national, res_2002_2_national,
@@ -24,10 +23,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 			res_2012_1_national, 
 			res_2012_1_departments,
 			res_2012_people,
-            geo,
             tpl_result, tpl_people, tpl_menu_item) {
   	window._ = _;
-  	window.geo = geo;
+    window.$ = $;
 
   	var app =  {
     	API:API,
@@ -36,6 +34,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
     	currentRound:new Date().getTime()<1335909600000 ? 1 : 2, //1335909600000 = 2.5.2012
     	years:[2002, 2007, 2012],
     	pastResults:{},
+      debug:function(){
+        console && console.log.apply(console, arguments);
+      },
     	setup:function(){
   			var self=this;
   			self.initPastResults();
@@ -128,9 +129,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	          },
 
 	          error:function(type, details){
-	          	console.log('error', arguments);
+	          	self.debug('error', arguments);
 	          	$('#error').show();
-	          	setTimeout(function(){window.location.hash='';}, 2000);
+	          	//setTimeout(function(){window.location.hash='';}, 2000);
 	          }
 
 	        });
@@ -194,11 +195,12 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       	$('#result-department').hide();
       	$('#wait').show();
       	self.getResults(year, round, function(err, results){
-    		$('#wait').hide();
+    		  $('#wait').hide();
 
 
 
     		if (err || !results || !results.national){
+          self.debug('viewResults error '+err);
     			window.location.hash = 'error/results/no';
     			return;
     		}
@@ -233,28 +235,25 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
 	      		}), function(item){return 0-item.percent}) : null)
 	      	});
 	      	self.views.resultPeople.render();
-	      	self.initMap('result-map');	
-	      	self.fillMap(results.departements, year);
-
-
-	      	if (results && results.national && results.national.sources){
-	      		$('#main-h3').html('Source: '+_.first(results.national.sources)+', '+results.national.updated_at);
-	      	}
-	      	$('#main-h2').text((round==1 ? '1er ': round+'e ' )+'tour '+year);
-	      	if (callback){
-	      		callback();
-	      	}
+	      	self.initMap('result-map', function(){
+            self.fillMap(results.departements, year);
+            if (results && results.national && results.national.sources){
+              $('#main-h3').html('Source: '+_.first(results.national.sources)+', '+results.national.updated_at);
+            }
+            $('#main-h2').text((round==1 ? '1er ': round+'e ' )+'tour '+year);
+            if (callback){
+              callback();
+            }  
+          });	
+	      	
       	});
-      	
-
-		
 
       },
       getResults:function(year, round, callback){
-		var self=this;
-		var results = self.pastResults[year] ? self.pastResults[year][round] : null;
+  		  var self=this;
+  		  var results = self.pastResults[year] ? self.pastResults[year][round] : null;
 
-		if (!results || !results.national){
+  		  if (!results || !results.national){
       		//get live results
       		self.API.getResults(year, round, callback);
       	}
@@ -264,18 +263,9 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       		
       	}
       },
-      initMap:function(id){
-      	var self=this;
-      	document.getElementById(id).innerHTML = '';
-      	self.map = {
-      		entries:{},
-      		raphael:new Raphael(document.getElementById(id), 600, 600),
-      	};
-      	self.map.set = self.map.raphael.set();
-      	_.each(geo, function(dep, key){
-      		self.map.entries[key] = self.map.raphael.path(dep);
-      		self.map.set.push(self.map.entries[key])
-      	});
+      initMap:function(id, callback){
+      	this.debug('undefined method app.initMap');
+        callback && callback();
       },
       fillMap:function(results, year){
       	var self=this;
@@ -284,19 +274,44 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       },
       colorMap:function(results, year){
       	var self=this;
-      	var people = self.pastResults[year] ? self.pastResults[year].people : eval('res_'+year+'_people');
-      	var scores;
       	_.each(results, function(res, dep){
-      		if (!self.map.entries[dep]){
-      			return;
-      		}
-      		leader = _.first(_.sortBy(_.map(res.votes, function(item, name){
-      			return {name:name, number:item.number, percent:item.percent};
-      		}), function(item){return 0-item.number;}));
-          if (!leader) return;
-      		self.map.entries[dep].attr('fill', people[leader.name].color);
-      		self.map.entries[dep].node.id =  'map-item-'+dep;
+         	var leader = self.getResultLeader(res, year);
+
+          self.colorDepartment(dep, leader);
+          
       	});
+      },
+      colorDepartment:function(dep, leader, year){
+        this.debug('app.colorDep', dep, leader)
+        if (!this.map.entries[dep]){
+            return;
+        }
+        this.map.entries[dep].attr('fill',leader.color);
+        this.map.entries[dep].node.id =  'map-item-'+dep;
+      },
+      getResultLeader:function(res, year){
+        if (!res || !res.votes){
+          return null;
+        }
+        if (!year){
+          year = this.currentYear;
+        }
+        var leader = _.first(_.sortBy(_.map(res.votes, function(item, name){
+            return {name:name, number:item.number, percent:item.percent};
+          }), function(item){return 0-item.number;}));
+        if (!leader) return null;
+
+        try{
+          var people = this.pastResults[year] ? this.pastResults[year].people : eval('res_'+year+'_people');  
+        }
+        catch(e){
+          var people = {};
+        }
+        
+
+        return {color:people[leader.name] ? people[leader.name].color : '#cecece', name:leader.name};
+
+          
       },
       bindMap:function(){
       	var self = this;
@@ -362,9 +377,6 @@ define(['joshlib!vendor/underscore','joshlib!vendor/backbone','joshlib!router',
       }
   	};
 
-	app.setup();
-
-  	window.app=app;
   	return app;
   }
  );

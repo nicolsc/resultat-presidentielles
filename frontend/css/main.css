@@ -153,6 +153,8 @@ div.percent{
 #result-map{
 	position:absolute;
 	left:380px;
+	width:600px;
+	height:600px;
 }
 #result-map path{
 	cursor:pointer;
