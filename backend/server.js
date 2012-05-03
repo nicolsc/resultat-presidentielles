@@ -1,7 +1,6 @@
 
 var express = require('express'),
     request = require('request'),
-    _ = require('underscore'),
     http=require('http'),
     fs = require('fs'),
     requirejs=require('requirejs'),
