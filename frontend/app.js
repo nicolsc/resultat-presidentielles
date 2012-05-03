@@ -104,20 +104,20 @@ define(['joshlib!vendor/underscore','joshlib!utils/dollar', 'joshlib!vendor/back
   			var self=this;
   			self.routes = Router({
 	          routes: {
-	            ""         								: 'home',
-	            "/"        								: 'home',
-	            "resultat/:year"						: 'result',
-	            'resultat/:year/:round'					: 'result',
+	            ""                                       : 'home',
+	            "/"                                      : 'home',
+	            "resultat/:year"						             : 'result',
+	            'resultat/:year/:round'					         : 'result',
 	            'resultat/:year/:round/departement/:dep' : 'resultDept',
-	            "error/:type" 							: 'error',
-	            "error/:type/:details" 					: 'error'
+	            "error/:type"                            : 'error',
+	            "error/:type/:details" 					         : 'error'
 	          },
 	          result:function(year, round){
 	          	$('#error').hide();
 	          	self.viewResults(year || self.currentYear, round || self.currentRound);
 	          },
 	          resultDept:function(year, round, dep){
-	          	$('#error').hide();
+              $('#error').hide();
 	          	self.viewResults(year, round, function(){
 	          		self.viewDepartmentResults(dep);	
 	          	});
@@ -235,7 +235,7 @@ define(['joshlib!vendor/underscore','joshlib!utils/dollar', 'joshlib!vendor/back
 	      		}), function(item){return 0-item.percent}) : null)
 	      	});
 	      	self.views.resultPeople.render();
-	      	self.initMap('result-map', function(){
+          self.initMap('result-map', function(){
             self.fillMap(results.departements, year);
             if (results && results.national && results.national.sources){
               $('#main-h3').html('Source: '+_.first(results.national.sources)+', '+results.national.updated_at);
@@ -322,18 +322,18 @@ define(['joshlib!vendor/underscore','joshlib!utils/dollar', 'joshlib!vendor/back
       	});
       },
       viewDepartmentResults:function(department, results){
-      	var self=this;
+        var self=this;
       	if (!results){
       		results = self.currentResults;
       	}
       	self.views.resultDeptInfos = new Panel({
- 			el:"#result-department-infos",
+ 			    el:"#result-department-infos",
          	// templateEl:"#template-local",
          	template : tpl_result,
           	collection:new Backbone.Collection([results && results.departements ? results.departements[department] : null]),
       	});
-	    self.views.resultDeptInfos.render();
-	    self.views.resultDeptPeople = new List({
+	     self.views.resultDeptInfos.render();
+	     self.views.resultDeptPeople = new List({
       		el:'#result-department-people',
       		itemTemplate:tpl_people,
       		collection:new Backbone.Collection(results && results.departements ? _.sortBy(_.map(results.departements[department].votes, function(item, name){

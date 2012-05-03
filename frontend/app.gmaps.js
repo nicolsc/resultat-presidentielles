@@ -6,12 +6,23 @@ define(['app', 'data/gmaps/all', 'js/polygonzo'],
 			gmaps_apiKey:'AIzaSyD7OiTesAiVvYe0BTuSCVpZQHP_PRJgNss',
 			initMap:function(id, callback){
 				var self = this;
+				window.gmaps_init_done=false;
 				window.gmaps_init_callback = function(){
-					self.initGMaps(id, callback);
-					delete gmaps_init_callback;
+					if (!gmaps_init_done){
+						self.initGMaps(id, callback);
+						delete gmaps_init_callback;
+						gmaps_init_done=true;
+					}
 				};
 
 				self.loadGMaps('gmaps_init_callback');
+
+				setTimeout(function(){
+					if (!gmaps_init_done){
+						//offline ?
+						window.location.pathname = window.location.pathname.replace(/\/gmaps/,'');
+					}
+				}, 2000);
 			},
 			loadGMaps:function(callbackName){
 				var script = document.createElement("script");
@@ -86,8 +97,6 @@ define(['app', 'data/gmaps/all', 'js/polygonzo'],
 				_.each(self.map.entries, function(dep){
 					var id = parseInt(dep.id, 10) > 100 ? dep.id : dep.id.substring(1);
 					var leader = self.getResultLeader(results[id]);
-
-					self.debug('dep', dep, dep.id, id, leader)
 
 					_.extend(dep, options, {
 						fillColor:leader ? leader.color : '#ffff00',
