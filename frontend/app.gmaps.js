@@ -1,8 +1,9 @@
-define(['app', 'data/gmaps/all', 'js/polygonzo'], 
-	function(mainApp, departements, PolyGonzo){
+define(['app', 'api.ftv', 'data/gmaps/all', 'js/polygonzo'], 
+	function(mainApp,API, departements, PolyGonzo){
 		window.PolyGonzo = PolyGonzo;
 		window.data = departements;
 		var app =  _.extend({}, mainApp,{
+			API:API,
 			gmaps_apiKey:'AIzaSyD7OiTesAiVvYe0BTuSCVpZQHP_PRJgNss',
 			initMap:function(id, callback){
 				var self = this;
@@ -20,6 +21,7 @@ define(['app', 'data/gmaps/all', 'js/polygonzo'],
 				setTimeout(function(){
 					if (!gmaps_init_done){
 						//offline ?
+						
 						window.location.pathname = window.location.pathname.replace(/\/gmaps/,'');
 					}
 				}, 2000);
@@ -55,9 +57,11 @@ define(['app', 'data/gmaps/all', 'js/polygonzo'],
 				self.map.polyGonzo.setMap(self.map.gmap);
 			},
 			fillMap:function(results, year){
-				this.colorMap.apply(this, arguments);
-				this.updateDepartmentsShapes(results);
-				this.setPolyGonzo();
+				if (results){
+					this.colorMap.apply(this, arguments);
+					this.updateDepartmentsShapes(results);
+					this.setPolyGonzo();
+				}
 				
 			},
 			colorDepartment:function(dep, leader){
@@ -83,6 +87,7 @@ define(['app', 'data/gmaps/all', 'js/polygonzo'],
 				};
 			},
 			updateDepartmentsShapes:function(results){
+
 				var self = this;
 				if (!self.map || !self.map.entries){
 					return self.debug('app.updateDepartmentsShapes', 'no map entries', self.map.entries);

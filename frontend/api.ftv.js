@@ -30,6 +30,32 @@ define(['api', 'joshlib!vendor/underscore'],
 					self.processTextResult(err, res, callback);
 				});
 			},
+			getEveryDepartementsResults:function(year, round, callback){
+				var cb = _.after(96, callback);
+				var results = {};
+				for (var i=96;i-->1;){
+					if (i==20){
+						//corse
+						this.getDepartmentResults(year, round, '2A', function(err, res){
+							results['2A'] =res;
+							cb(err, results);
+						});
+						this.getDepartmentResults(year, round, '2B', function(err, res){
+							results['2B'] =res;
+							cb(err, results);
+						});
+					}
+					else{
+						this.getDepartmentResults(year, round, i,function(err, res){
+							if (res && !err){
+								results[res.department] =res;
+							}
+							cb(err, results);
+						});
+					}
+				}
+
+			},
 			getDepartmentResults:function(year, round, department, callback){
 				var self=this;
 				if (department<10){

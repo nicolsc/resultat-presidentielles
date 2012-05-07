@@ -236,9 +236,9 @@ define(['joshlib!vendor/underscore','joshlib!utils/dollar', 'joshlib!vendor/back
 	      	});
 	      	self.views.resultPeople.render();
           self.initMap('result-map', function(){
-            self.fillMap(results.departements, year);
-            if (results && results.national && results.national.sources){
-              $('#main-h3').html('Source: '+_.first(results.national.sources)+', '+results.national.updated_at);
+            self.fillMap(self.currentResults.departements, year);
+            if (self.currentResults && self.currentResults.national && self.currentResults.national.sources){
+              $('#main-h3').html('Source: '+_.first(self.currentResults.national.sources)+', '+self.currentResults.national.updated_at);
             }
             $('#main-h2').text((round==1 ? '1er ': round+'e ' )+'tour '+year);
             if (callback){
