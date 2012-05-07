@@ -1,0 +1,2 @@
+define([], function(){return(
+{"estimate":false,"updated_at":"07\/05 à 11h06","sources":["Ministère de l'intérieur"],"slug":"\/elections","population":65350000,"registered":46073165,"participation":{"percent":80.34,"number":37016982},"abstained":{"percent":19.66,"number":9056183},"real":{"percent":75.68000000000001,"number":34869809},"blank":{"percent":5.8,"number":2147173},"votes":{"Nicolas Sarkozy":{"number":16869371,"percent":48.38},"François Hollande":{"number":18000438,"percent":51.62}}})});
